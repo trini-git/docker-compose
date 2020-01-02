@@ -1,0 +1,55 @@
+version: '3.7'
+services:
+  config-server:
+    image: config-server:v1
+    ports:
+      - "8001:8001"
+    restart: always
+    networks: 
+      - mynetwork
+  eureka-server:
+    image: eureka-server:v1
+    ports:
+      - "8761:8761"
+    restart: always
+    networks: 
+      - mynetwork
+  microservice-mongo:
+    image: mongo:4.0.4
+    ports:
+      - "27017:27017"
+    restart: always
+    networks: 
+      - mynetwork
+  bank-account-main:
+    image: bank-account-main:v1
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on: 
+      - config-server
+      - eureka-server
+      - microservice-mongo
+  bank-fixed-term-account-vip:
+    image: bank-fixed-term-account-vip:v1
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on: 
+      - config-server
+      - eureka-server
+      - microservice-mongo
+  zuul-server:
+    image: zuul-server:v1
+    ports:
+      - "8020:8020"
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on: 
+      - config-server
+      - eureka-server
+      - bank-account-main
+      - bank-fixed-term-account-vip
+networks:
+  mynetwork:
