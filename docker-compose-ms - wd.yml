@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  bank-account-main:
+    image: bank-account-main:v1
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on: 
+      - config-server
+      - eureka-server
+      - microservice-mongo
+  bank-fixed-term-account-vip:
+    image: bank-fixed-term-account-vip:v1
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on: 
+      - config-server
+      - eureka-server
+      - microservice-mongo
+  transaction-vip:
+    image: bank-account-main:v1
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on: 
+      - config-server
+      - eureka-server
+      - microservice-mongo
+networks:
+  mynetwork:

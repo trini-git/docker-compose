@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  bank-account-main:
+    image: bank-account-main:v1
+    restart: always
+    networks: 
+      - mynetwork
+  fixed-term-vip:
+    image: fixed-term-vip:v1
+    restart: always
+    networks: 
+      - mynetwork
+  transaction-vip:
+    image: transaction-vip:v1
+    restart: always
+    networks: 
+      - mynetwork
+  zuul-server:
+    image: zuul-server:v1
+    ports:
+      - "8020:8020"
+    restart: always
+    networks: 
+      - mynetwork
+    depends_on:
+      - bank-account-main
+      - fixed-term-vip
+      - transaction-vip
+networks:
+  mynetwork:
